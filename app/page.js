@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [summary, setSummary] = useState("");
@@ -9,6 +9,18 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [url, setUrl] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const validateUrl = (urlString) => {
     try {
@@ -75,22 +87,28 @@ export default function Home() {
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
+      <div style={{ 
+        maxWidth: '800px', 
+        margin: '0 auto', 
+        padding: isMobile ? '20px 16px' : '40px 20px'
+      }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+        <div style={{ textAlign: 'center', marginBottom: isMobile ? '30px' : '50px' }}>
           <h1 style={{ 
-            fontSize: '3.5rem', 
+            fontSize: isMobile ? '2.5rem' : '3.5rem', 
             fontWeight: '900', 
             color: 'white',
             margin: '0 0 16px 0',
-            textShadow: '0 4px 8px rgba(0,0,0,0.2)'
+            textShadow: '0 4px 8px rgba(0,0,0,0.2)',
+            lineHeight: '1.1'
           }}>
             🤖 Smart Summarizer
           </h1>
           <p style={{ 
-            fontSize: '1.2rem', 
+            fontSize: isMobile ? '1rem' : '1.2rem', 
             color: 'rgba(255,255,255,0.9)', 
-            margin: '0'
+            margin: '0',
+            padding: isMobile ? '0 10px' : '0'
           }}>
             AI-powered article analysis with summary and key insights
           </p>
@@ -99,27 +117,29 @@ export default function Home() {
         {/* Input Form */}
         <div style={{ 
           background: 'white', 
-          borderRadius: '20px', 
+          borderRadius: isMobile ? '16px' : '20px', 
           boxShadow: '0 20px 40px rgba(0,0,0,0.1)', 
-          padding: '40px', 
+          padding: isMobile ? '24px' : '40px', 
           marginBottom: '30px'
         }}>
           <form onSubmit={handleSummarize}>
             <input
               type="text"
-              placeholder="Paste article URL here..."
+              placeholder={isMobile ? "Paste URL here..." : "Paste article URL here..."}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               style={{
                 width: '100%',
                 boxSizing: 'border-box',
-                padding: '16px 20px',
+                padding: isMobile ? '14px 16px' : '16px 20px',
                 fontSize: '16px',
                 border: '2px solid #e5e7eb',
                 borderRadius: '12px',
                 outline: 'none',
                 marginBottom: '20px',
-                fontFamily: 'inherit'
+                fontFamily: 'inherit',
+                WebkitAppearance: 'none',
+                appearance: 'none'
               }}
               disabled={loading}
               required
@@ -130,18 +150,21 @@ export default function Home() {
               disabled={loading || !url}
               style={{
                 width: '100%',
-                padding: '16px',
-                fontSize: '18px',
+                padding: isMobile ? '14px' : '16px',
+                fontSize: isMobile ? '16px' : '18px',
                 fontWeight: '600',
                 borderRadius: '12px',
                 border: 'none',
                 cursor: loading || !url ? 'not-allowed' : 'pointer',
                 background: loading || !url ? '#d1d5db' : 'linear-gradient(135deg, #667eea, #764ba2)',
                 color: 'white',
-                fontFamily: 'inherit'
+                fontFamily: 'inherit',
+                WebkitAppearance: 'none',
+                appearance: 'none',
+                touchAction: 'manipulation'
               }}
             >
-              {loading ? 'Analyzing...' : 'Analyze Article'}
+              {loading ? 'Analyzing...' : isMobile ? 'Analyze' : 'Analyze Article'}
             </button>
           </form>
         </div>
@@ -150,22 +173,27 @@ export default function Home() {
         {loading && (
           <div style={{ 
             background: 'white', 
-            borderRadius: '20px', 
+            borderRadius: isMobile ? '16px' : '20px', 
             boxShadow: '0 20px 40px rgba(0,0,0,0.1)', 
-            padding: '40px', 
+            padding: isMobile ? '30px 20px' : '40px', 
             textAlign: 'center',
             marginBottom: '30px'
           }}>
             <div style={{ 
-              width: '50px',
-              height: '50px',
+              width: isMobile ? '40px' : '50px',
+              height: isMobile ? '40px' : '50px',
               border: '4px solid #f3f4f6',
               borderTop: '4px solid #667eea',
               borderRadius: '50%',
               animation: 'spin 1s linear infinite',
               margin: '0 auto 20px'
             }}></div>
-            <p>AI is analyzing your article...</p>
+            <p style={{ 
+              fontSize: isMobile ? '14px' : '16px',
+              margin: '0'
+            }}>
+              AI is analyzing your article...
+            </p>
           </div>
         )}
 
@@ -173,50 +201,72 @@ export default function Home() {
         {(summary || keyPoints.length > 0) && (
           <div style={{ 
             background: 'white', 
-            borderRadius: '20px', 
+            borderRadius: isMobile ? '16px' : '20px', 
             boxShadow: '0 20px 40px rgba(0,0,0,0.1)', 
-            padding: '40px',
+            padding: isMobile ? '24px' : '40px',
             marginBottom: '30px'
           }}>
             <h2 style={{ 
-              fontSize: '1.5rem', 
+              fontSize: isMobile ? '1.25rem' : '1.5rem', 
               fontWeight: '700', 
               color: '#1f2937',
-              marginBottom: '20px'
+              marginBottom: '20px',
+              textAlign: isMobile ? 'center' : 'left'
             }}>
               📊 Analysis Results
             </h2>
             
             {summary && (
-              <div style={{ marginBottom: '30px' }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '10px' }}>
+              <div style={{ marginBottom: isMobile ? '24px' : '30px' }}>
+                <h3 style={{ 
+                  fontSize: isMobile ? '1rem' : '1.1rem', 
+                  fontWeight: '600', 
+                  marginBottom: '10px' 
+                }}>
                   📄 Summary
                 </h3>
                 <div style={{ 
-                  padding: '20px', 
+                  padding: isMobile ? '16px' : '20px', 
                   background: '#f8fafc', 
                   borderRadius: '12px',
                   border: '1px solid #e5e7eb'
                 }}>
-                  <p style={{ margin: '0', lineHeight: '1.6' }}>{summary}</p>
+                  <p style={{ 
+                    margin: '0', 
+                    lineHeight: '1.6',
+                    fontSize: isMobile ? '14px' : '16px'
+                  }}>
+                    {summary}
+                  </p>
                 </div>
               </div>
             )}
 
             {keyPoints.length > 0 && (
-              <div style={{ marginBottom: '30px' }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '10px' }}>
+              <div style={{ marginBottom: isMobile ? '24px' : '30px' }}>
+                <h3 style={{ 
+                  fontSize: isMobile ? '1rem' : '1.1rem', 
+                  fontWeight: '600', 
+                  marginBottom: '10px' 
+                }}>
                   🎯 Key Points
                 </h3>
                 <div style={{ 
-                  padding: '20px', 
+                  padding: isMobile ? '16px' : '20px', 
                   background: '#fef7ff', 
                   borderRadius: '12px',
                   border: '1px solid #e9d5ff'
                 }}>
-                  <ul style={{ margin: '0', paddingLeft: '20px' }}>
+                  <ul style={{ 
+                    margin: '0', 
+                    paddingLeft: isMobile ? '16px' : '20px' 
+                  }}>
                     {keyPoints.map((point, index) => (
-                      <li key={index} style={{ marginBottom: '8px', lineHeight: '1.6' }}>
+                      <li key={index} style={{ 
+                        marginBottom: '8px', 
+                        lineHeight: '1.6',
+                        fontSize: isMobile ? '14px' : '15px'
+                      }}>
                         {point}
                       </li>
                     ))}
@@ -225,7 +275,12 @@ export default function Home() {
               </div>
             )}
             
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div style={{ 
+              display: 'flex', 
+              gap: isMobile ? '8px' : '12px', 
+              flexWrap: 'wrap',
+              justifyContent: isMobile ? 'center' : 'flex-start'
+            }}>
               <button
                 onClick={async () => {
                   try {
@@ -244,13 +299,19 @@ export default function Home() {
                   background: '#3b82f6',
                   color: 'white',
                   border: 'none',
-                  padding: '10px 16px',
+                  padding: isMobile ? '12px 16px' : '10px 16px',
                   borderRadius: '8px',
                   cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  fontFamily: 'inherit',
+                  fontSize: isMobile ? '14px' : '16px',
+                  fontWeight: '500',
+                  touchAction: 'manipulation',
+                  WebkitAppearance: 'none',
+                  appearance: 'none',
+                  minWidth: isMobile ? '120px' : 'auto'
                 }}
               >
-                📋 Copy All
+                {isMobile ? '📋 Copy' : '📋 Copy All'}
               </button>
               
               {url && (
@@ -261,13 +322,19 @@ export default function Home() {
                   style={{
                     background: '#6b7280',
                     color: 'white',
-                    padding: '10px 16px',
+                    padding: isMobile ? '12px 16px' : '10px 16px',
                     borderRadius: '8px',
                     textDecoration: 'none',
-                    fontFamily: 'inherit'
+                    fontFamily: 'inherit',
+                    fontSize: isMobile ? '14px' : '16px',
+                    fontWeight: '500',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: isMobile ? '120px' : 'auto'
                   }}
                 >
-                  🔗 View Source
+                  {isMobile ? '🔗 Source' : '🔗 View Source'}
                 </a>
               )}
             </div>
@@ -278,12 +345,27 @@ export default function Home() {
         {error && (
           <div style={{ 
             background: '#fef2f2', 
-            borderRadius: '20px', 
-            padding: '30px',
+            borderRadius: isMobile ? '16px' : '20px', 
+            padding: isMobile ? '20px' : '30px',
             border: '1px solid #fecaca'
           }}>
-            <h3 style={{ color: '#dc2626', marginBottom: '10px' }}>Error</h3>
-            <p style={{ color: '#b91c1c', margin: '0' }}>{error}</p>
+            <h3 style={{ 
+              color: '#dc2626', 
+              marginBottom: '10px',
+              fontSize: isMobile ? '1rem' : '1.1rem',
+              textAlign: isMobile ? 'center' : 'left'
+            }}>
+              Error
+            </h3>
+            <p style={{ 
+              color: '#b91c1c', 
+              margin: '0',
+              fontSize: isMobile ? '14px' : '16px',
+              lineHeight: '1.5',
+              textAlign: isMobile ? 'center' : 'left'
+            }}>
+              {error}
+            </p>
           </div>
         )}
       </div>

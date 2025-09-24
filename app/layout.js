@@ -1,8 +1,15 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "AI Summarizer",
-  description: "Paste a URL to get a concise AI-generated summary",
+  title: "Smart Summarizer - AI Article Analysis",
+  description: "AI-powered article analysis with summary and key insights extraction",
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({ children }) {
