@@ -11,6 +11,9 @@ export default function Home() {
   const [url, setUrl] = useState("");
   const [isMobile, setIsMobile] = useState(false);
 
+  // Link to the repository
+  const repoUrl = "https://github.com/rohiths08/ai-summarizer";
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -368,6 +371,33 @@ export default function Home() {
             </p>
           </div>
         )}
+
+        {/* Repository Link Footer */}
+        <div style={{
+          marginTop: '18px',
+          textAlign: 'center'
+        }}>
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open GitHub repository"
+            style={{
+              color: 'rgba(255,255,255,0.95)',
+              background: 'transparent',
+              padding: isMobile ? '8px 12px' : '10px 14px',
+              borderRadius: '10px',
+              textDecoration: 'none',
+              fontWeight: '600',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: isMobile ? '14px' : '15px'
+            }}
+          >
+            🐙 View project on GitHub
+          </a>
+        </div>
       </div>
     </div>
   );
