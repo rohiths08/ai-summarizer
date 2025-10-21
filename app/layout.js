@@ -16,7 +16,28 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="min-h-screen font-sans antialiased">
-        {children}
+        <header className="bg-gray-100 p-4 shadow-md">
+          <h1 className="text-2xl font-bold">Smart AI Summarizer</h1>
+          <nav className="mt-2">
+            <a
+              href="https://github.com/rohiths08/ai-summarizer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline mr-4"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://ai-summarizer-nine-beige.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              Live Demo
+            </a>
+          </nav>
+        </header>
+        <main>{children}</main>
       </body>
     </html>
   );
