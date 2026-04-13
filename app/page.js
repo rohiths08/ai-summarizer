@@ -544,7 +544,7 @@ export default function Home() {
                   💬 Ask AI About This Article
                 </h3>
                 <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.32)" }}>
-                  Context-aware Q&amp;A · Powered by Qwen2.5
+                  Context-aware Q&amp;A · Powered by Llama-3.2
                 </p>
               </div>
 

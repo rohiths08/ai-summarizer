@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-const HF_MODEL = "Qwen/Qwen2.5-1.5B-Instruct";
-const HF_API_URL = `https://router.huggingface.co/hf-inference/models/${HF_MODEL}/v1/chat/completions`;
+const HF_MODEL = "meta-llama/Llama-3.2-1B-Instruct";
+const HF_API_URL = `https://router.huggingface.co/v1/chat/completions`;
 
 export async function POST(req) {
   try {
